@@ -12,7 +12,7 @@ public class Evaluation {
 				carFlag++;
 			}
 			if(carFlag == 0) cell = cell.cdr;
-			
+
 		}
 		cell = car.cdr;
 		switch (car.value) {
@@ -23,19 +23,20 @@ public class Evaluation {
 			}
 			break;
 		case "-":
-			
+
 			break;
 		case "*":
-			
+
 			break;
 		case "/":
-			
+
 			break;
-			
+
 		default:
 			break;
 		}
 		car.value = String.valueOf(value);
+		test;
 		return car.value;
 	}
 
