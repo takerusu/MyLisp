@@ -31,5 +31,7 @@ public class LAnalysis {
 		if(letter != 0) listCode.add(lcode.substring(index-letter, index));
 			if(pflag==0) index++;
 		}
+		listCode.add("EOF");
 	}
+	
 }
