@@ -26,9 +26,11 @@ public class Lisp {
 		}while(la.listCode.get(index).equals("EOF") != true);
 		int indexE = 0;
 		Setq setq = new Setq();
+		Defun defun = new Defun();
 		for(int i = 0; i < sanum; i++){
+
 			Evaluation evaluation = new Evaluation();
-			String eval = evaluation.eval(saArrayList.get(i).cell,setq,indexE);
+			String eval = evaluation.eval(saArrayList.get(i).cell,setq,indexE,defun);
 			indexE = evaluation.index;
 			System.out.println(eval);
 		}

@@ -1,19 +1,44 @@
+import java.util.ArrayList;
+
 
 
 
 public class Evaluation {
 	public boolean setqFlag = false;
 	public int index;
-	public String eval(STree cell, Setq setq, int indexE){
+	public String eval(STree cell, Setq setq, int indexE, Defun defun){
 		index = indexE;
 		int value = 0;
 		int flag = 0;
+		int defunFlag = 0;
 		String ans;
 		STree car = new STree();
 		car = cell;
+		
 		while (cell.value.equals("Nil") != true) {
-			if(cell.value.equals("car")){
-				cell.value = eval(cell.car,setq,index);
+			if(cell.value.equals("defun")){				//defun 定義
+				cell = cell.cdr;
+				if(cell.value.equals("Nil")) return "ERROR";
+				if(cell.cdr.value.equals("car") != true) return "ERROR";
+				if(cell.cdr.cdr.value.equals("car") != true) return "ERROR";
+				if(cell.cdr.cdr.cdr.value.equals("Nil") != true) return "ERROR";
+				defun.name.add(cell.value);
+				cell = cell.cdr;
+				STree loopcell = new STree();
+				loopcell = cell.car;
+				ArrayList<String> thisSymbol = new ArrayList<String>();
+				while(loopcell.value.equals("Nil") != true){
+					thisSymbol.add(loopcell.value);
+					loopcell = loopcell.cdr;
+				}
+				defun.symbol.add(thisSymbol);
+				cell = cell.cdr;
+				defun.cell = cell;
+				
+				return defun.name.get(defun.name.size()-1);
+				
+			}else if(cell.value.equals("car")){
+				cell.value = eval(cell.car,setq,index,defun);
 			}else{
 				if(cell.value.equals("setq")) setqFlag = true;
 				if(index > 0 && setqFlag != true){
@@ -24,7 +49,10 @@ public class Evaluation {
 					}
 				}
 			}
-			cell = cell.cdr;
+			if(defunFlag == 0){
+				cell = cell.cdr;
+			}
+			defunFlag = 0;
 		}
 		setqFlag = false;
 		cell = car.cdr;
@@ -153,10 +181,80 @@ public class Evaluation {
 			return setq.value.get(index-1);
 			
 		default:
-			break;
+
+			if(defun.name.size() == 0) return "ERROR";
+			for(int i = 0; i < defun.name.size(); i++){
+				if(car.value.equals(defun.name.get(i))){
+
+					STree loopCell = new STree();
+					loopCell = cell;
+					ArrayList<String> thisValue = new ArrayList<String>();
+					for (int j = 0; j < defun.symbol.get(i).size(); j++) {
+						if(loopCell.value.equals("Nil")) return "ERROR";
+						thisValue.add(loopCell.value);
+						loopCell = loopCell.cdr;
+					}
+					STree defunCell = new STree();
+					defunCell = defun.cell;
+					cell = defunCell;
+					cell.cdr = loopCell;
+					STree loopCellFirst = new STree();
+					loopCell = cell.car;
+					loopCellFirst = cell.car;
+					changeValue(loopCell, i, defun, thisValue);
+					cell.car = loopCellFirst;
+					defunFlag++;
+				}
+			}
+			return eval(cell.car,setq,index,defun);
+//			break;
 //			return "ERROR";
 		}
 		return String.valueOf(value);
 	}
+	
+	public void changeValue(STree loopCell,int i, Defun defun, ArrayList<String> thisValue){
+		while(loopCell.value.equals("Nil") != true){
+			if(loopCell.value.equals("car")){
+				changeValue(loopCell.car, i, defun, thisValue);
+			}else{
+				for(int k = 0; k < defun.symbol.get(i).size(); k++){
+					if(defun.symbol.get(i).get(k).equals(loopCell.value)){
+						loopCell.value = thisValue.get(k);
+					}
+				}
+			}
+			loopCell = loopCell.cdr;
+		}
+		
+	}
+	
+//	public int searchFunc(STree cell ,Defun defun){
+//		STree startCell = new STree();
+//		startCell = cell;
+//		while (cell.cdr.value.equals("Nil") != true) {
+//			if(cell.cdr.value.equals("car")){
+//				searchFunc(cell.cdr.car,defun);
+//			}else{
+//				for(int i = 0; i < defun.name.size(); i++){
+//					if(cell.cdr.value.equals(defun.name.get(i))){
+//						STree loopCell = new STree();
+//						loopCell = cell.cdr.cdr.car;
+//						ArrayList<String> thisValue = new ArrayList<String>();
+//						for (int j = 0; j < defun.symbol.get(i).size(); j++) {
+//							if(loopCell.value.equals("Nil")) return -1;
+//							thisValue.add(loopCell.value);
+//							loopCell = loopCell.cdr;
+//						}
+//						cell.cdr = loopCell;
+//						cell.car = defun.cell;
+//						
+//					}
+//					
+//				}
+//			}
+//		}
+//
+//	}
 
 }

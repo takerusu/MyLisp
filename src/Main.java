@@ -2,7 +2,7 @@
 public class Main {
 
 	public static void main(String[] args) {
-		String s = "(setq x 3) (setq y 5) (setq x 8) (+  3 x y)";
+		String s = "(defun test (x y) (+ x  y)) (defun test2 (x y) (- x  y)) (+ (test 2 3) (test2 5 4))";
 		Lisp lisp = new Lisp();
 		lisp.lisp(s);
 
