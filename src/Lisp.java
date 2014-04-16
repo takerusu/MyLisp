@@ -7,23 +7,23 @@ public class Lisp {
 		int index = 0;
 		int sanum = 0;
 		
-		LAnalysis la = new LAnalysis(s);
-		la.lAnalysis();
+		Tokenizer tn = new Tokenizer(s);
+		tn.lAnalysis();
 		
-		for (int i = 0; i < la.listCode.size(); i++) {
-			System.out.print(la.listCode.get(i) + " ");
+		for (int i = 0; i < tn.listCode.size(); i++) {
+			System.out.print(tn.listCode.get(i) + " ");
 		}
 		System.out.println();
 		
-		ArrayList<SAnalysis> saArrayList = new ArrayList<SAnalysis>();
+		ArrayList<Parser> saArrayList = new ArrayList<Parser>();
 		do{
-			SAnalysis sa = new SAnalysis(la.listCode);
-			index = sa.sAnalysis(sa.cell, index)+1;
+			Parser p = new Parser(tn.listCode);
+			index = p.sAnalysis(p.cell, index)+1;
 			if(index == -1) return -1;
-			saArrayList.add(sa);
+			saArrayList.add(p);
 			sanum++;
 			
-		}while(la.listCode.get(index).equals("EOF") != true);
+		}while(tn.listCode.get(index).equals("EOF") != true);
 		int indexE = 0;
 		Setq setq = new Setq();
 		Defun defun = new Defun();
