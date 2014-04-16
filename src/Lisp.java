@@ -27,11 +27,12 @@ public class Lisp {
 		int indexE = 0;
 		Setq setq = new Setq();
 		Defun defun = new Defun();
+		boolean defunFlag = false;
 		for(int i = 0; i < sanum; i++){
 
-			Evaluation evaluation = new Evaluation();
-			String eval = evaluation.eval(saArrayList.get(i).cell,setq,indexE,defun);
-			indexE = evaluation.index;
+			Evaluator evaluator = new Evaluator();
+			String eval = evaluator.eval(saArrayList.get(i).cell,setq,indexE,defun,defunFlag);
+			indexE = evaluator.index;
 			System.out.println(eval);
 		}
 		
