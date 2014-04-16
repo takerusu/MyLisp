@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 
 
@@ -5,11 +11,34 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		String s ="(setq x 12) "
-				+ "(defun tak (x y z) (if (<= x y) y (tak (tak (- x 1) y z) (tak (- y 1) z x) (tak (- z 1) x y))))"
-				+ " (tak x 6 0)";
-		Lisp lisp = new Lisp();
-		lisp.lisp(s);
+		BufferedReader input =new BufferedReader(new InputStreamReader(System.in));
+		File file = null;
+		System.out.println("text file's name?");
+		try {
+			file = new File(input.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String str = " ";
+		if(file != null){
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String toRead = br.readLine();
+				while(toRead != null){
+					str = str + toRead + " ";
+					toRead = br.readLine();
+				}
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		String s = "(defun fib (n) (if (< n 3) 1 (+ (fib (- n 1)) (fib (- n 2)))) ) (fib 25)";
+		if(!str.equals(" ")){
+			Lisp lisp = new Lisp();
+			lisp.lisp(str);
+		}
 	}
 		
 		
@@ -19,11 +48,11 @@ public class Main {
 }
 
 
-//"(defun fib (n) (if (< n 3) 1 (+ (fib (- n 1)) (fib (- n 2)))) ) (fib 25)"
 
 //"(defun fib (n) (if (< n 3) 1 (+ (fib (- n 1)) (fib (- n 2)))) ) (fib 36)"
 
-
+//"(defun tak (x y z) (if (<= x y) y (tak (tak (- x 1) y z) (tak (- y 1) z x) (tak (- z 1) x y))))"
+//+ " (tak 12 6 0)"
 
 
 //"(defun test (x y) (+ x y)) (test 1 2)"
