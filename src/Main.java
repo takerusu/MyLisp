@@ -5,8 +5,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		String s ="(defun tak (x y z) (if (<= x y) y (tak (tak (- x 1) y z) (tak (- y 1) z x) (tak (- z 1) x y))))"
-				+ " (tak 12 6 0)";
+		String s ="(setq x 12) "
+				+ "(defun tak (x y z) (if (<= x y) y (tak (tak (- x 1) y z) (tak (- y 1) z x) (tak (- z 1) x y))))"
+				+ " (tak x 6 0)";
 		Lisp lisp = new Lisp();
 		lisp.lisp(s);
 	}
