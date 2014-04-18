@@ -1,38 +1,38 @@
 
-public class STree implements Cloneable {
+public class ConsCell implements Cloneable {
 	public String value;
-	public STree car;
-	public STree cdr;
+	public ConsCell car;
+	public ConsCell cdr;
 	
-	public STree(){
+	public ConsCell(){
 		
 	}
-	public STree(String value){
+	public ConsCell(String value){
 		this.value = value;
 	}
 	
-	public STree(STree car, STree cdr){
+	public ConsCell(ConsCell car, ConsCell cdr){
 		this.car = car;
 		this.cdr = cdr;
 	}
 	
 	public Object clone(){
-		STree myself = this;
-		STree clone = new STree();
-		STree firstClone = new STree();
+		ConsCell myself = this;
+		ConsCell clone = new ConsCell();
+		ConsCell firstClone = new ConsCell();
 		firstClone = clone;
 		while(myself.value.equals("Nil") != true){
 			if(myself.value.equals("car")){
 				clone.value = myself.value;
-				STree car = new STree();
-				car = (STree)myself.car.clone();
+				ConsCell car = new ConsCell();
+				car = (ConsCell)myself.car.clone();
 				clone.car = car;
-				STree cdr = new STree();
+				ConsCell cdr = new ConsCell();
 				clone.cdr = cdr;
 				clone = clone.cdr;
 			}else{
 				clone.value = myself.value;
-				STree cdr = new STree();
+				ConsCell cdr = new ConsCell();
 				cdr.value = myself.cdr.value;
 				clone.cdr = cdr;
 				clone = clone.cdr;
