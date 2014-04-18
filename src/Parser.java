@@ -5,11 +5,11 @@ public class Parser {
 
 	public int index = 0;
 	ArrayList<String> listCode = new ArrayList<String>();
-	STree cell = new STree();
+	ConsCell cell = new ConsCell();
 	public Parser(ArrayList<String> listCode){
 		this.listCode = listCode;
 	}
-	public int sAnalysis(STree cell,int index){
+	public int sAnalysis(ConsCell cell,int index){
 		if(listCode.get(index).equals("(") != true && index == 0){
 			return -1;
 		}
@@ -18,15 +18,15 @@ public class Parser {
 			if(index >= listCode.size()) break;
 			if(listCode.get(index).equals("(")){
 				cell.value = "car";
-				STree car = new STree("car");
-				STree cdr = new STree();
+				ConsCell car = new ConsCell("car");
+				ConsCell cdr = new ConsCell();
 				cell.car = car;
 				index = sAnalysis(cell.car, index);
 				cell.cdr = cdr;
 				cell = cell.cdr;
 			}else{
 				cell.value = listCode.get(index);
-				STree cdr = new STree();
+				ConsCell cdr = new ConsCell();
 				cell.cdr = cdr;
 				cell = cell.cdr;
 			}
