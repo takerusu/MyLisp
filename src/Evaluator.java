@@ -6,12 +6,12 @@ import java.util.ArrayList;
 public class Evaluator {
 	public boolean setqFlag = false;
 	public int index;
-	public String eval(ConsCell cell, Setq setq, int indexE, Defun defun, Boolean defunFlag){
+	public String eval(STree cell, Setq setq, int indexE, Defun defun, Boolean defunFlag){
 		index = indexE;
 		int value = 0;
 		int flag = 0;
 		String ans;
-		ConsCell car = new ConsCell();
+		STree car = new STree();
 		car = cell;
 		
 		while (cell.value.equals("Nil") != true && cell.value.equals("if") != true) {
@@ -23,7 +23,7 @@ public class Evaluator {
 				if(cell.cdr.cdr.cdr.value.equals("Nil") != true) return "ERROR";
 				defun.name.add(cell.value);
 				cell = cell.cdr;
-				ConsCell loopCell = new ConsCell();
+				STree loopCell = new STree();
 				loopCell = cell.car;
 				ArrayList<String> thisSymbol = new ArrayList<String>();
 				while(loopCell.value.equals("Nil") != true){
@@ -193,7 +193,7 @@ public class Evaluator {
 				for(int i = 0; i < defun.name.size(); i++){
 					if(car.value.equals(defun.name.get(i))){
 						defunFlag = true;
-						ConsCell loopCell = new ConsCell();
+						STree loopCell = new STree();
 						loopCell = cell;
 						ArrayList<String> thisValue = new ArrayList<String>();
 						for (int j = 0; j < defun.symbol.get(i).size(); j++) {
@@ -201,11 +201,11 @@ public class Evaluator {
 							thisValue.add(loopCell.value);
 							loopCell = loopCell.cdr;
 						}
-						ConsCell defunCell = new ConsCell();
-						defunCell = (ConsCell)defun.cell.get(i).clone();
+						STree defunCell = new STree();
+						defunCell = (STree)defun.cell.get(i).clone();
 						cell = defunCell;
 						cell.cdr = loopCell;
-						ConsCell loopCellFirst = new ConsCell();
+						STree loopCellFirst = new STree();
 						loopCell = cell.car;
 						loopCellFirst = cell.car;
 						changeValue(loopCell, i, defun, thisValue);
@@ -225,7 +225,7 @@ public class Evaluator {
 		return String.valueOf(value);
 	}
 	
-	public void changeValue(ConsCell loopCell,int i, Defun defun, ArrayList<String> thisValue){
+	public void changeValue(STree loopCell,int i, Defun defun, ArrayList<String> thisValue){
 		while(loopCell.value.equals("Nil") != true){
 			if(loopCell.value.equals("car")){
 				changeValue(loopCell.car, i, defun, thisValue);
